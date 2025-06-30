@@ -1,16 +1,15 @@
-// Polyfill fetch for Node < 18. Remove/comment this line if on Node 18+ (Netlify default).
-// const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-
 const Redis = require("ioredis");
 
-const BOT_TOKEN = "7244980103:AAGip-Y8YMcN0H58ojQTIVtkmpfTI0F8N0s";
-const CHAT_ID = "6735963923";
+// Fetch secrets from environment variables
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const CHAT_ID = process.env.CHAT_ID;
+const REDIS_URL = process.env.REDIS_URL;
 const OTP_EXPIRY_SECONDS = 300; // 5 minutes
 
-// Get Redis URL from environment variable
-const REDIS_URL = process.env.REDIS_URL;
+if (!BOT_TOKEN || !CHAT_ID || !REDIS_URL) {
+  throw new Error("Missing required environment variables: BOT_TOKEN, CHAT_ID, or REDIS_URL");
+}
 
-// Create Redis client outside handler for connection reuse
 const redis = new Redis(REDIS_URL);
 
 function getOtpKey(email) {
@@ -18,6 +17,7 @@ function getOtpKey(email) {
 }
 
 exports.handler = async function (event) {
+  // Only allow POST
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -53,7 +53,7 @@ exports.handler = async function (event) {
       statusCode: 500,
       body: JSON.stringify({
         success: false,
-        message: "Failed to store OTP",
+        message: "Failed to store OTP in Redis",
         error: err.message,
       }),
     };
@@ -81,7 +81,8 @@ exports.handler = async function (event) {
     });
 
     if (!response.ok) {
-      throw new Error("Telegram API error");
+      const text = await response.text();
+      throw new Error(`Telegram API error: ${response.status} ${text}`);
     }
 
     return {
@@ -97,7 +98,7 @@ exports.handler = async function (event) {
       statusCode: 500,
       body: JSON.stringify({
         success: false,
-        message: "Failed to send OTP",
+        message: "Failed to send OTP to Telegram",
         error: error.message,
       }),
     };

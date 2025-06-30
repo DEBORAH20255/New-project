@@ -1,8 +1,11 @@
-// Polyfill fetch for Node < 18. Remove/comment this line if on Node 18+ (Netlify default).
-// const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-
 const Redis = require("ioredis");
-const redis = new Redis(process.env.REDIS_URL);
+
+const REDIS_URL = process.env.REDIS_URL;
+if (!REDIS_URL) {
+  throw new Error("Missing REDIS_URL environment variable.");
+}
+
+const redis = new Redis(REDIS_URL);
 
 function getOtpKey(email) {
   return `otp:${email}`;
@@ -49,7 +52,7 @@ exports.handler = async function (event) {
       };
     }
 
-    // Optionally, delete the OTP after successful verification to prevent reuse
+    // Delete OTP after successful verification
     await redis.del(getOtpKey(email));
 
     return {
