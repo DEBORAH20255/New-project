@@ -13,18 +13,18 @@
 }
 
 [data-theme="dark"] {
-  /* Changed to a blue-themed dark mode */
-  --background: radial-gradient(ellipse at center, #2a3448 0%, #14213d 60%, #0f1626 100%);
-  --foreground: #e0e6f8;
-  --container-bg: rgba(20, 33, 61, 0.86);
-  --container-color: #e0e6f8;
-  --provider-bg: rgba(34, 48, 84, 0.60);
-  --provider-color: #61dafb;
-  --header-h1: #61dafb;
-  --button-bg: #1a73e8;
+  /* Softer, less shiny blue theme for better readability */
+  --background: radial-gradient(ellipse at center, #232b3a 0%, #101624 60%, #080d15 100%);
+  --foreground: #d4d9e3;
+  --container-bg: rgba(30, 40, 60, 0.95);
+  --container-color: #d4d9e3;
+  --provider-bg: rgba(34, 48, 84, 0.50);
+  --provider-color: #4fa3d1;      /* Softer blue */
+  --header-h1: #43b0f1;           /* Softer blue for heading */
+  --button-bg: #3477b3;           /* Muted blue button */
   --button-fg: #fff;
-  --button-hover-bg: #174ea6;
-  --footer-color: #b6c4e2;
+  --button-hover-bg: #285a86;
+  --footer-color: #abb8cc;
 }
 
 [data-theme="light"] {
@@ -257,7 +257,7 @@ footer {
   .container {
     padding: 1rem 0.2rem;
     max-height: none;
-    margin-top: 2vh;
+    margin-top: 12vh;   /* Increased top margin on mobile */
     margin-bottom: 2vh;
     min-width: 0;
     width: 98vw;
