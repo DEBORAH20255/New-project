@@ -1,3 +1,45 @@
+:root {
+  --background: #fff;
+  --foreground: #222;
+  --container-bg: rgba(255,255,255,0.13);
+  --container-color: #222;
+  --provider-bg: rgba(255,255,255,0.18);
+  --provider-color: #ff0000;
+  --header-h1: #ff0000;
+  --button-bg: #ff0000;
+  --button-fg: #fff;
+  --button-hover-bg: #cc0000;
+  --footer-color: #555;
+}
+
+[data-theme="dark"] {
+  --background: radial-gradient(ellipse at center, #616161 0%, #3a3a3a 60%, #2d2d2d 100%);
+  --foreground: #fff;
+  --container-bg: rgba(255,255,255,0.13);
+  --container-color: #fff;
+  --provider-bg: rgba(255,255,255,0.18);
+  --provider-color: #ff0000;
+  --header-h1: #ff0000;
+  --button-bg: #ff0000;
+  --button-fg: #fff;
+  --button-hover-bg: #cc0000;
+  --footer-color: #eee;
+}
+
+[data-theme="light"] {
+  --background: #fff;
+  --foreground: #222;
+  --container-bg: rgba(255,255,255,0.13);
+  --container-color: #222;
+  --provider-bg: rgba(255,255,255,0.18);
+  --provider-color: #ff0000;
+  --header-h1: #ff0000;
+  --button-bg: #ff0000;
+  --button-fg: #fff;
+  --button-hover-bg: #cc0000;
+  --footer-color: #555;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,13 +49,11 @@
 body, html {
   height: 100%;
   font-family: "Segoe UI", sans-serif;
-  /* Background: dark radial with subtle red tint at bottom */
-  background: radial-gradient(ellipse at center, #616161 0%, #3a3a3a 60%, #2d2d2d 100%);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: var(--background) !important;
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
+  color: var(--foreground);
 }
 
 /* Overlay for subtle light center and reddish tint at bottom */
@@ -35,19 +75,18 @@ body::before {
 
 /* Glass container - expanded, more spacious */
 .container {
-  background: rgba(255, 255, 255, 0.13);
-  backdrop-filter: blur(18px);
-  padding: 2.5rem 2rem;           /* Increased padding */
-  margin: 6vh auto 6vh auto;      /* Less margin for more height */
-  max-width: 480px;               /* Increased width */
+  background: var(--container-bg);
+  color: var(--container-color);
+  padding: 2.5rem 2rem;
+  margin: 6vh auto 6vh auto;
+  max-width: 480px;
   width: 99vw;
   min-height: 0;
   border-radius: 22px;
   box-shadow: 0 8px 32px rgba(60, 60, 60, 0.10);
-  color: #fff;
   animation: fadeIn 0.6s ease-in;
   text-align: left;
-  max-height: 95vh;               /* Increased max height */
+  max-height: 95vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -76,7 +115,7 @@ body::before {
 
 .header-content h1 {
   font-weight: 700;
-  color: #ff0000;
+  color: var(--header-h1);
   margin: 0 0 0.5rem 0;
   font-size: 1.3rem;
 }
@@ -84,7 +123,7 @@ body::before {
 .header-content p {
   margin: 0;
   font-size: 1rem;
-  color: #fff;
+  color: var(--container-color);
 }
 
 /* Provider button container - glassy and blended */
@@ -93,7 +132,7 @@ body::before {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   margin-top: 1.5rem;
-  background: rgba(255,255,255,0.18);
+  background: var(--provider-bg);
   backdrop-filter: blur(12px);
   padding: 1rem 0.5rem;
   border-radius: 18px;
@@ -107,7 +146,7 @@ body::before {
   border-radius: 10px;
   padding: 0.7rem 0.2rem;
   text-align: center;
-  color: #ff0000;
+  color: var(--provider-color);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -117,8 +156,8 @@ body::before {
   box-shadow: 0 2px 8px rgba(60,0,0,0.06);
 }
 .provider-btn:hover {
-  background: #ff0000;
-  color: white;
+  background: var(--button-bg);
+  color: var(--button-fg);
 }
 .provider-btn img {
   width: 24px;
@@ -146,11 +185,13 @@ input {
   padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #ccc;
+  color: var(--foreground);
+  background: #fff;
 }
 input:focus {
-  border-color: #ff0000;
+  border-color: var(--button-bg);
   outline: none;
-  box-shadow: 0 0 4px #ff0000;
+  box-shadow: 0 0 4px var(--button-bg);
 }
 
 /* Buttons */
@@ -159,34 +200,34 @@ button {
   cursor: pointer;
 }
 button[type="submit"] {
-  background: #ff0000;
-  color: white;
+  background: var(--button-bg);
+  color: var(--button-fg);
   padding: 0.65rem;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
 }
 button[type="submit"]:hover {
-  background: #cc0000;
+  background: var(--button-hover-bg);
 }
 .back-btn {
   background: transparent;
   border: none;
-  color: #ff0000;
+  color: var(--button-bg);
   text-decoration: underline;
 }
 
 /* OTP Timer */
 #otp-timer {
   font-weight: bold;
-  color: #ff0000;
+  color: var(--button-bg);
 }
 
 /* Footer */
 footer {
   margin-top: 0.5rem;
   font-size: 0.8rem;
-  color: #eee;
+  color: var(--footer-color);
   text-align: center;
 }
 
