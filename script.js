@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
     userEmail = email;
 
     try {
-      const response = await fetch("/.netlify/functions/sendOTP", {
+      const response = await fetch("/.netlify/functions/send-otp", { // <-- FIXED ENDPOINT
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("/.netlify/functions/verifyOTP", {
+      const response = await fetch("/.netlify/functions/verify-otp", { // <-- FIXED ENDPOINT
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail, otp: otpValue }),
