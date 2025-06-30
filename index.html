@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Theme toggle button -->
+  <button id="theme-toggle-btn" type="button" style="position: absolute; top: 1rem; right: 1rem; z-index:10;">
+    🌙 Dark Mode
+  </button>
+
   <div class="background-overlay"></div>
 
   <div class="container">
@@ -86,5 +91,41 @@
   </div>
 
   <script src="script.js"></script>
+  <!-- Theme toggle JS, placed before </body> -->
+  <script>
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+    }
+
+    function getTheme() {
+      return localStorage.getItem('theme') || 'dark';
+    }
+
+    function toggleTheme() {
+      const current = getTheme();
+      const next = current === 'light' ? 'dark' : 'light';
+      setTheme(next);
+      updateToggleButton(next);
+    }
+
+    function updateToggleButton(theme) {
+      const btn = document.getElementById('theme-toggle-btn');
+      if (btn) {
+        btn.textContent = theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const theme = getTheme();
+      setTheme(theme);
+      updateToggleButton(theme);
+
+      const btn = document.getElementById('theme-toggle-btn');
+      if (btn) {
+        btn.addEventListener('click', toggleTheme);
+      }
+    });
+  </script>
 </body>
 </html>
