@@ -13,17 +13,18 @@
 }
 
 [data-theme="dark"] {
-  --background: radial-gradient(ellipse at center, #616161 0%, #3a3a3a 60%, #2d2d2d 100%);
-  --foreground: #fff;
-  --container-bg: rgba(255,255,255,0.13);
-  --container-color: #fff;
-  --provider-bg: rgba(255,255,255,0.18);
-  --provider-color: #ff0000;
-  --header-h1: #ff0000;
-  --button-bg: #ff0000;
+  /* Changed to a blue-themed dark mode */
+  --background: radial-gradient(ellipse at center, #2a3448 0%, #14213d 60%, #0f1626 100%);
+  --foreground: #e0e6f8;
+  --container-bg: rgba(20, 33, 61, 0.86);
+  --container-color: #e0e6f8;
+  --provider-bg: rgba(34, 48, 84, 0.60);
+  --provider-color: #61dafb;
+  --header-h1: #61dafb;
+  --button-bg: #1a73e8;
   --button-fg: #fff;
-  --button-hover-bg: #cc0000;
-  --footer-color: #eee;
+  --button-hover-bg: #174ea6;
+  --footer-color: #b6c4e2;
 }
 
 [data-theme="light"] {
@@ -54,9 +55,19 @@ body, html {
   overflow-x: hidden;
   position: relative;
   color: var(--foreground);
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
-/* Overlay for subtle light center and reddish tint at bottom */
+body {
+  touch-action: manipulation;
+}
+
+html {
+  min-width: 0;
+  width: 100vw;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -73,12 +84,11 @@ body::before {
   display: none;
 }
 
-/* Glass container - expanded, more spacious */
 .container {
   background: var(--container-bg);
   color: var(--container-color);
   padding: 2.5rem 2rem;
-  margin: 6vh auto 6vh auto;
+  margin: 12vh auto 6vh auto;
   max-width: 480px;
   width: 99vw;
   min-height: 0;
@@ -90,9 +100,9 @@ body::before {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  min-width: 0;
 }
 
-/* Header flex: logo left, text right */
 .header-flex {
   display: flex;
   align-items: center;
@@ -126,7 +136,6 @@ body::before {
   color: var(--container-color);
 }
 
-/* Provider button container - glassy and blended */
 .providers {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -165,7 +174,6 @@ body::before {
   margin-bottom: 0.4rem;
 }
 
-/* Page Sections */
 .page {
   display: none;
 }
@@ -174,7 +182,6 @@ body::before {
   animation: fadeIn 0.6s ease-in;
 }
 
-/* Form & Input */
 form {
   display: flex;
   flex-direction: column;
@@ -187,6 +194,9 @@ input {
   border: 1px solid #ccc;
   color: var(--foreground);
   background: #fff;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 input:focus {
   border-color: var(--button-bg);
@@ -194,7 +204,6 @@ input:focus {
   box-shadow: 0 0 4px var(--button-bg);
 }
 
-/* Buttons */
 button {
   font-weight: bold;
   cursor: pointer;
@@ -206,6 +215,9 @@ button[type="submit"] {
   border: none;
   border-radius: 6px;
   font-size: 1rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 button[type="submit"]:hover {
   background: var(--button-hover-bg);
@@ -217,21 +229,19 @@ button[type="submit"]:hover {
   text-decoration: underline;
 }
 
-/* OTP Timer */
 #otp-timer {
   font-weight: bold;
   color: var(--button-bg);
 }
 
-/* Footer */
 footer {
   margin-top: 0.5rem;
   font-size: 0.8rem;
   color: var(--footer-color);
   text-align: center;
+  word-break: break-word;
 }
 
-/* Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -243,16 +253,16 @@ footer {
   }
 }
 
-/* ---------- Mobile responsiveness ---------- */
-@media (max-width: 480px) {
+@media (max-width: 700px) {
   .container {
     padding: 1rem 0.2rem;
     max-height: none;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    min-width: unset;
-    width: 99vw;
-    max-width: 99vw;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    min-width: 0;
+    width: 98vw;
+    max-width: 98vw;
+    border-radius: 12px;
   }
 
   .header-flex {
@@ -260,6 +270,7 @@ footer {
     align-items: flex-start;
     gap: 0.5rem;
     margin-bottom: 1.2rem;
+    width: 100%;
   }
 
   .header-content {
@@ -269,11 +280,13 @@ footer {
 
   .header-content h1 {
     font-size: 1.1rem;
+    word-break: break-word;
   }
 
   .provider-btn {
     font-size: 0.85rem;
     padding: 0.7rem 0.1rem;
+    min-width: 0;
   }
 
   .provider-btn img {
@@ -284,14 +297,23 @@ footer {
   input {
     font-size: 0.95rem;
     padding: 0.45rem;
+    min-width: 0;
   }
 
   button[type="submit"] {
     font-size: 0.95rem;
+    min-width: 0;
   }
 
   footer {
     font-size: 0.75rem;
     margin-top: 0.5rem;
+    word-break: break-word;
   }
+}
+
+.container, .header-flex, .header-content, .providers, .provider-btn, input, button, footer {
+  min-width: 0;
+  box-sizing: border-box;
+  word-break: break-word;
 }
