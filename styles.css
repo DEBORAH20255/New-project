@@ -7,32 +7,48 @@
 body, html {
   height: 100%;
   font-family: "Segoe UI", sans-serif;
-  background: url('https://images.unsplash.com/photo-1715024355256-cd0e49ef8e4d?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+  /* Background: dark radial with subtle red tint at bottom, closely matching the screenshot */
+  background: radial-gradient(ellipse at center, #616161 0%, #3a3a3a 60%, #2d2d2d 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
   overflow-x: hidden;
   position: relative;
 }
 
-/* Blur + overlay tint */
-.background-overlay {
+/* Overlay for subtle light center and reddish tint at bottom */
+body::before {
+  content: "";
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(16px);
-  z-index: -1;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.14) 0%, rgba(0,0,0,0.18) 70%, rgba(0,0,0,0.45) 100%),
+    linear-gradient(to bottom, rgba(255,0,0,0.10) 60%, rgba(255,0,0,0.18) 100%);
+  mix-blend-mode: lighten;
+}
+
+.background-overlay {
+  display: none;
 }
 
 /* Glass container */
 .container {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.94);
   padding: 2rem 2rem;
-  margin: 2rem auto;
+  margin: 4rem auto 2rem auto;
   max-width: 600px;
+  min-height: 0;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  color: white;
+  box-shadow: 0 8px 32px rgba(60, 60, 60, 0.18);
+  color: #222;
   animation: fadeIn 0.6s ease-in;
   text-align: left;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 /* Header flex: logo left, text right */
@@ -66,7 +82,7 @@ body, html {
 .header-content p {
   margin: 0;
   font-size: 1rem;
-  color: #fff;
+  color: #444;
 }
 
 /* Provider button container */
@@ -75,9 +91,10 @@ body, html {
   grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   gap: 1rem;
   margin-top: 2rem;
-  background: rgba(255, 0, 0, 0.05);
-  padding: 1rem;
-  border-radius: 10px;
+  background: #fff; /* solid white for the box */
+  padding: 1.5rem 1rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 28px rgba(60, 60, 60, 0.11), 0 1.5px 6px rgba(99,0,0,0.09);
 }
 
 .provider-btn {
@@ -155,14 +172,14 @@ button[type="submit"]:hover {
 /* OTP Timer */
 #otp-timer {
   font-weight: bold;
-  color: #ffcccc;
+  color: #ff0000;
 }
 
 /* Footer */
 footer {
   margin-top: 1.5rem;
   font-size: 0.8rem;
-  color: #eee;
+  color: #666;
   text-align: center;
 }
 
@@ -182,6 +199,9 @@ footer {
 @media (max-width: 480px) {
   .container {
     padding: 1rem 0.5rem;
+    max-height: none;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 
   .header-flex {
