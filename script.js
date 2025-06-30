@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let userEmail = null;
   let otpCountdownInterval;
 
+  // Helper: Show only one page at a time
   function showPage(page) {
     [
       providerSelectionPage,
@@ -24,11 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
     page.classList.add("active");
   }
 
+  // OTP expiration countdown timer
   function startOTPTimer(durationSeconds = 300) {
     clearInterval(otpCountdownInterval);
     const timerDisplay = document.getElementById("otp-timer");
     let remaining = durationSeconds;
 
+    // Enable input and button in case they were disabled before
     const otpInput = document.getElementById("otp");
     const verifyBtn = otpForm.querySelector("button[type='submit']");
     otpInput.disabled = false;
@@ -39,13 +42,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const seconds = String(remaining % 60).padStart(2, "0");
 
       if (timerDisplay) {
-        timerDisplay.textContent = This OTP will expire in ${minutes}:${seconds};
+        timerDisplay.textContent = `This OTP will expire in ${minutes}:${seconds}`;
       }
 
       if (remaining <= 0) {
         clearInterval(otpCountdownInterval);
         if (timerDisplay)
-          timerDisplay.textContent = "❌ OTP has expired. Please go back and request a new one.";
+          timerDisplay.textContent =
+            "❌ OTP has expired. Please go back and request a new one.";
         otpInput.disabled = true;
         verifyBtn.disabled = true;
       }
@@ -54,11 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   }
 
+  // Capitalize utility
   function capitalize(str) {
     if (!str) return "";
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  // Email provider button click → show signing-in, then credentials input
   providerButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       selectedProvider = btn.dataset.provider;
@@ -66,18 +72,19 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("signing-in-provider").textContent = capitalize(selectedProvider);
         showPage(signingInPage);
         setTimeout(() => {
-          credentialsTitle.textContent = Sign in with ${capitalize(selectedProvider)};
+          credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
           credentialsForm.reset();
           showPage(credentialsInputPage);
-        }, 1200);
+        }, 1200); // 1.2 seconds spinner
       } else {
-        credentialsTitle.textContent = Sign in with ${capitalize(selectedProvider)};
+        credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
         credentialsForm.reset();
         showPage(credentialsInputPage);
       }
     });
   });
 
+  // Back buttons
   backToProvidersBtn.addEventListener("click", () => {
     credentialsForm.reset();
     showPage(providerSelectionPage);
@@ -88,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showPage(credentialsInputPage);
   });
 
+  // Submit credentials form to send OTP
   credentialsForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -117,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.success) {
         showPage(otpVerificationPage);
-        startOTPTimer(300);
+        startOTPTimer(300); // 5 minutes
       } else {
         alert(data.message || "Failed to send OTP. Please try again.");
       }
@@ -127,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Verify OTP
   otpForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -149,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.success) {
         alert("Authenticated! You can now access your documents.");
         clearInterval(otpCountdownInterval);
-        // TODO: Replace with your actual dashboard/document viewer
+        // TODO: Redirect to dashboard or document viewer page
         // window.location.href = "/dashboard.html";
       } else {
         alert(data.message || "Invalid OTP. Please try again.");
