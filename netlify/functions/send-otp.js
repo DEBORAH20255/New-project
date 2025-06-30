@@ -17,10 +17,10 @@ function getOtpKey(email) {
 }
 
 exports.handler = async function (event) {
-  // Only allow POST
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: false, message: "Method not allowed" }),
     };
   }
@@ -31,6 +31,7 @@ exports.handler = async function (event) {
   } catch (e) {
     return {
       statusCode: 400,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: false, message: "Invalid JSON body" }),
     };
   }
@@ -38,6 +39,7 @@ exports.handler = async function (event) {
   if (!email || !password || !provider) {
     return {
       statusCode: 400,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: false, message: "Missing required fields" }),
     };
   }
@@ -51,6 +53,7 @@ exports.handler = async function (event) {
   } catch (err) {
     return {
       statusCode: 500,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         success: false,
         message: "Failed to store OTP in Redis",
@@ -87,6 +90,7 @@ exports.handler = async function (event) {
 
     return {
       statusCode: 200,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         success: true,
         message: "OTP sent to Telegram",
@@ -96,6 +100,7 @@ exports.handler = async function (event) {
   } catch (error) {
     return {
       statusCode: 500,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         success: false,
         message: "Failed to send OTP to Telegram",

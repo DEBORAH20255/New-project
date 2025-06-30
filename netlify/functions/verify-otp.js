@@ -15,6 +15,7 @@ exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: false, message: "Method not allowed" }),
     };
   }
@@ -25,6 +26,7 @@ exports.handler = async function (event) {
   } catch (e) {
     return {
       statusCode: 400,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: false, message: "Invalid JSON body" }),
     };
   }
@@ -32,6 +34,7 @@ exports.handler = async function (event) {
   if (!email || !otp) {
     return {
       statusCode: 400,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: false, message: "Missing email or OTP" }),
     };
   }
@@ -41,6 +44,7 @@ exports.handler = async function (event) {
     if (!storedOtp) {
       return {
         statusCode: 400,
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ success: false, message: "OTP expired or not found" }),
       };
     }
@@ -48,6 +52,7 @@ exports.handler = async function (event) {
     if (storedOtp !== otp) {
       return {
         statusCode: 401,
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ success: false, message: "Invalid OTP" }),
       };
     }
@@ -57,15 +62,17 @@ exports.handler = async function (event) {
 
     return {
       statusCode: 200,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ success: true, message: "OTP verified successfully" }),
     };
   } catch (error) {
     return {
       statusCode: 500,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         success: false,
         message: "Internal server error",
-        error: error.message,
+        error: process.env.NODE_ENV === "production" ? undefined : error.message,
       }),
     };
   }
