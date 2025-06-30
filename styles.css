@@ -7,7 +7,7 @@
 body, html {
   height: 100%;
   font-family: "Segoe UI", sans-serif;
-  /* Background: dark radial with subtle red tint at bottom, closely matching the screenshot */
+  /* Background: dark radial with subtle red tint at bottom */
   background: radial-gradient(ellipse at center, #616161 0%, #3a3a3a 60%, #2d2d2d 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -33,16 +33,18 @@ body::before {
   display: none;
 }
 
-/* Glass container */
+/* Glass container - smaller, more compact */
 .container {
-  background: rgba(255, 255, 255, 0.94);
-  padding: 2rem 2rem;
-  margin: 4rem auto 2rem auto;
-  max-width: 600px;
+  background: rgba(255, 255, 255, 0.13);
+  backdrop-filter: blur(18px);
+  padding: 1.25rem 1rem;
+  margin: 8vh auto 8vh auto;
+  max-width: 370px;
+  width: 98vw;
   min-height: 0;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(60, 60, 60, 0.18);
-  color: #222;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(60, 60, 60, 0.10);
+  color: #fff;
   animation: fadeIn 0.6s ease-in;
   text-align: left;
   max-height: 90vh;
@@ -61,8 +63,8 @@ body::before {
 }
 
 .logo {
-  height: 56px;
-  min-width: 56px;
+  height: 48px;
+  min-width: 48px;
   margin: 0;
   display: block;
   flex-shrink: 0;
@@ -76,48 +78,52 @@ body::before {
   font-weight: 700;
   color: #ff0000;
   margin: 0 0 0.5rem 0;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .header-content p {
   margin: 0;
   font-size: 1rem;
-  color: #444;
+  color: #fff;
 }
 
-/* Provider button container */
+/* Provider button container - glassy and blended */
 .providers {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-top: 2rem;
-  background: #fff; /* solid white for the box */
-  padding: 1.5rem 1rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 28px rgba(60, 60, 60, 0.11), 0 1.5px 6px rgba(99,0,0,0.09);
+  margin-top: 1.5rem;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  padding: 1rem 0.5rem;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(60, 60, 60, 0.06);
+  border: 1.5px solid rgba(255,255,255,0.13);
 }
 
 .provider-btn {
-  background: white;
+  background: rgba(255,255,255,0.9);
   border: 2px solid #ff0000;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 0.7rem 0.2rem;
   text-align: center;
   color: #ff0000;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-weight: bold;
-  transition: background 0.2s, color 0.2s;
+  font-size: 0.98rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(60,0,0,0.06);
 }
 .provider-btn:hover {
   background: #ff0000;
   color: white;
 }
 .provider-btn img {
-  width: 28px;
-  height: 28px;
-  margin-bottom: 0.5rem;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 0.4rem;
 }
 
 /* Page Sections */
@@ -137,7 +143,7 @@ form {
   margin-bottom: 1rem;
 }
 input {
-  padding: 0.6rem;
+  padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
@@ -155,9 +161,10 @@ button {
 button[type="submit"] {
   background: #ff0000;
   color: white;
-  padding: 0.75rem;
+  padding: 0.65rem;
   border: none;
   border-radius: 6px;
+  font-size: 1rem;
 }
 button[type="submit"]:hover {
   background: #cc0000;
@@ -179,7 +186,7 @@ button[type="submit"]:hover {
 footer {
   margin-top: 1.5rem;
   font-size: 0.8rem;
-  color: #666;
+  color: #eee;
   text-align: center;
 }
 
@@ -198,10 +205,12 @@ footer {
 /* ---------- Mobile responsiveness ---------- */
 @media (max-width: 480px) {
   .container {
-    padding: 1rem 0.5rem;
+    padding: 1rem 0.2rem;
     max-height: none;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    min-width: unset;
+    width: 99vw;
   }
 
   .header-flex {
@@ -217,22 +226,22 @@ footer {
   }
 
   .header-content h1 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .provider-btn {
-    font-size: 0.8rem;
-    padding: 0.8rem;
+    font-size: 0.85rem;
+    padding: 0.7rem 0.1rem;
   }
 
   .provider-btn img {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
 
   input {
     font-size: 0.95rem;
-    padding: 0.5rem;
+    padding: 0.45rem;
   }
 
   button[type="submit"] {
