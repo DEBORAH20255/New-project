@@ -1,4 +1,5 @@
 const Redis = require("ioredis");
+const fetch = require("node-fetch"); // Polyfill fetch for Node.js
 
 // Fetch secrets from environment variables
 const BOT_TOKEN = process.env.BOT_TOKEN;
