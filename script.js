@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("signing-in-provider").textContent = capitalize(selectedProvider);
         showPage(signingInPage);
         setTimeout(() => {
-          credentialsTitle.textContent = Sign in with ${capitalize(selectedProvider)};
+          credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
           credentialsForm.reset();
           showPage(credentialsInputPage);
         }, 1200);
