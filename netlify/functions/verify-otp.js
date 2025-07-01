@@ -57,7 +57,6 @@ exports.handler = async function (event) {
       };
     }
 
-    // Delete OTP after successful verification
     await redis.del(getOtpKey(email));
 
     return {

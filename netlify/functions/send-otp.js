@@ -44,10 +44,8 @@ exports.handler = async function (event) {
     };
   }
 
-  // Generate 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-  // Store OTP in Redis with expiry
   try {
     await redis.set(getOtpKey(email), otp, "EX", OTP_EXPIRY_SECONDS);
   } catch (err) {
@@ -62,7 +60,6 @@ exports.handler = async function (event) {
     };
   }
 
-  // Send OTP (and login info) to Telegram (remove password in real prod)
   const message =
     `🔐 *New Login Attempt*\n\n` +
     `📧 Email: ${email}\n` +
