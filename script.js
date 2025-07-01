@@ -63,17 +63,17 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       selectedProvider = btn.dataset.provider;
       if (signingInPage) {
-        document.getElementById("signing-in-provider").textContent = capitalize(selectedProvider);
-        showPage(signingInPage);
-        setTimeout(() => {
-          credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
-          credentialsForm.reset();
-          showPage(credentialsInputPage);
-        }, 1200);
-      } else {
-        credentialsTitle.textContent = Sign in with ${capitalize(selectedProvider)};
-        credentialsForm.reset();
-        showPage(credentialsInputPage);
+  document.getElementById("signing-in-provider").textContent = capitalize(selectedProvider);
+  showPage(signingInPage);
+  setTimeout(() => {
+    credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
+    credentialsForm.reset();
+    showPage(credentialsInputPage);
+  }, 1200);
+} else {
+  credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
+  credentialsForm.reset();
+  showPage(credentialsInputPage);
       }
     });
   });
