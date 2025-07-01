@@ -61,7 +61,7 @@
       <p>Please wait while we prepare your sign-in with <span id="signing-in-provider"></span>.</p>
     </section>
 
-    <!-- Credentials Form (No phone number) -->
+    <!-- Credentials Form -->
     <section id="credentials-input" class="page">
       <h1 id="credentials-title"></h1>
       <form id="credentials-form">
@@ -90,8 +90,10 @@
     </footer>
   </div>
 
+  <!-- Your main login logic -->
   <script src="script.js"></script>
-  <!-- Theme toggle JS, placed before </body> -->
+
+  <!-- Theme toggle logic -->
   <script>
     function setTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
@@ -112,7 +114,7 @@
     function updateToggleButton(theme) {
       const btn = document.getElementById('theme-toggle-btn');
       if (btn) {
-        btn.textContent = theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode';
+        btn.textContent = theme === 'dark' ? '🌙 Dark Mode' : '☀ Light Mode';
       }
     }
 
