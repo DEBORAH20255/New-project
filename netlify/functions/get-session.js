@@ -4,7 +4,7 @@ const REDIS_URL = process.env.REDIS_URL;
 const redis = new Redis(REDIS_URL);
 
 function getSessionKey(token) {
-  return session:${token};
+  return `session:${token}`;
 }
 
 exports.handler = async function (event) {

