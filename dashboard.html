@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Adobe Cloud Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .dashboard-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .logout-btn {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background: crimson;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1>📄 Welcome to Your Adobe Cloud Dashboard</h1>
+    <p>This page is protected and only accessible after OTP verification.</p>
+    <button class="logout-btn" onclick="logout()">Log Out</button>
+  </div>
+
+  <script>
+    // On page load, check session
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("/.netlify/functions/get-session", {
+          method: "GET",
+          credentials: "include", // Important: send cookies
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+          // Redirect to login if not authenticated
+          window.location.href = "/";
+        }
+      } catch (err) {
+        console.error("Session check failed:", err);
+        window.location.href = "/";
+      }
+    });
+
+    function logout() {
+      // Invalidate session cookie
+      document.cookie = "session=; Path=/; Max-Age=0";
+      window.location.href = "/";
+    }
+  </script>
+</body>
+</html>
