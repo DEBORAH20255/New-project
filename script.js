@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const seconds = String(remaining % 60).padStart(2, "0");
 
       if (timerDisplay) {
-        timerDisplay.textContent = This OTP will expire in ${minutes}:${seconds};
+        `This OTP will expire in ${minutes}:${seconds}`;
       }
 
       if (remaining <= 0) {
