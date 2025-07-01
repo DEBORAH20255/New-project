@@ -1,4 +1,8 @@
-"dependencies": {
-  "ioredis": "^5.4.1",
-  "node-fetch": "^2.6.7"
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "dependencies": {
+    "ioredis": "^5.4.1",
+    "node-fetch": "^2.6.7"
+  }
 }
