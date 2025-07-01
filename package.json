@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "ioredis": "^5.4.1",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "uuid": "^9.0.0"
   }
 }
